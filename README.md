@@ -1,6 +1,6 @@
 # Cloudflare Firebase Auth Admin SDK
 
-This library tries to port all the authentication functionality of the Firebase Admin SDK to the Cloudflare Worker environment.
+Firebase Authentication Admin SDK for the Cloudflare Worker environment.
 
 # Supported operations:
 
