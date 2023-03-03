@@ -82,6 +82,45 @@ export class FirebaseAuth {
     return new UserRecord(result.users[0]);
   }
 
+  public async signInWithPassword({
+    email,
+    password,
+    tenantId,
+  }: {
+    email: string;
+    password: string;
+    tenantId?: string;
+  }) {
+    const request = {
+      email,
+      password,
+      tenantId,
+      returnSecureToken: true,
+    };
+    const response = await this.client.send({
+      method: 'POST',
+      path: `/accounts:signInWithPassword`,
+      data: JSON.stringify(request),
+    });
+    if (!response.ok) {
+      const err = await response.json<FirebaseErrorResponse>();
+      throw FirebaseError.fromServerError(err);
+    }
+
+    type SignInWithEmailPasswordResponse = {
+      idToken: string;
+      email: string;
+      refreshToken: string;
+      expiresIn: string;
+      localId: string;
+      registered: boolean;
+    };
+    const token = await response.json<SignInWithEmailPasswordResponse>();
+    const user = await this.getUser(token.localId);
+
+    return { token, user };
+  }
+
   public async signInWithCustomToken(
     token: string,
   ): Promise<{ idToken: string; refreshToken: string }> {

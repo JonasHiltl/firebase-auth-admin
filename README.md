@@ -8,6 +8,7 @@ Firebase Authentication Admin SDK for the Cloudflare Worker environment.
 - [x] getUser()
 - [x] signInWithCustomToken()
 - [x] signInWithIdp()
+- [x] signInWithPassword()
 - [x] verifyIdToken()
 - [x] createCustomToken()
 
