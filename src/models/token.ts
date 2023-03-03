@@ -22,3 +22,23 @@ export interface DecodedIdToken {
   uid: string;
   [key: string]: unknown;
 }
+
+export interface IdTokenResponse {
+  localId: string;
+  idToken?: string;
+  refreshToken?: string;
+  expiresIn?: string;
+  providerId?: string;
+
+  emailVerified: boolean;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  fullName?: string;
+  displayName?: string | null;
+  isNewUser?: boolean;
+  kind?: string;
+  photoUrl?: string | null;
+  rawUserInfo?: string;
+  screenName?: string | null;
+}

@@ -3,7 +3,7 @@ import { Config } from './config';
 import { HttpClient } from './httpClient';
 import { FirebaseError, FirebaseErrorResponse } from './models/firebaseError';
 import { CreateRequest } from './models/requests';
-import { DecodedIdToken } from './models/token';
+import { DecodedIdToken, IdTokenResponse } from './models/token';
 import { GetAccountInfoUserResponse, UserRecord } from './models/user';
 import { TokenGenerator } from './tokenGenerator';
 import { ServiceAccountSigner } from './tokenSigner';
@@ -111,6 +111,45 @@ export class FirebaseAuth {
       idToken: json.idToken,
       refreshToken: json.refreshToken,
     };
+  }
+
+  public async signInWithIdp({
+    postBody,
+    requestUri,
+    returnIdpCredential = true,
+    returnSecureToken = true,
+  }: {
+    postBody: string;
+    requestUri: string;
+    returnIdpCredential?: boolean;
+    returnSecureToken?: boolean;
+  }) {
+    const request = {
+      postBody,
+      requestUri,
+      returnIdpCredential,
+      returnSecureToken,
+    };
+
+    const response = await this.client.send({
+      method: 'POST',
+      path: `/accounts:signInWithIdp`,
+      data: JSON.stringify(request),
+    });
+    if (!response.ok) {
+      const err = await response.json<FirebaseErrorResponse>();
+      throw FirebaseError.fromServerError(err);
+    }
+
+    type SignInWithIdpResponse = IdTokenResponse & {
+      oauthAccessToken?: string;
+      oauthTokenSecret?: string;
+      nonce?: string;
+      oauthIdToken?: string;
+      pendingToken?: string;
+    };
+
+    return response.json<SignInWithIdpResponse>();
   }
 
   public async verifyIdToken(idToken: string): Promise<DecodedIdToken> {
