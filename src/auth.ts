@@ -116,17 +116,20 @@ export class FirebaseAuth {
   public async signInWithIdp({
     postBody,
     requestUri,
+    tenantId,
     returnIdpCredential = true,
     returnSecureToken = true,
   }: {
     postBody: string;
     requestUri: string;
+    tenantId?: string;
     returnIdpCredential?: boolean;
     returnSecureToken?: boolean;
   }) {
     const request = {
       postBody,
       requestUri,
+      tenantId,
       returnIdpCredential,
       returnSecureToken,
     };
