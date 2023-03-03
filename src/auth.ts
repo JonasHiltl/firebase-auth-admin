@@ -107,23 +107,19 @@ export class FirebaseAuth {
       throw FirebaseError.fromServerError(err);
     }
 
-    type SignInWithEmailPasswordResponse = {
+    type SignInWithPasswordResponse = {
       idToken: string;
       email: string;
+      displayName: string;
       refreshToken: string;
       expiresIn: string;
       localId: string;
       registered: boolean;
     };
-    const token = await response.json<SignInWithEmailPasswordResponse>();
-    const user = await this.getUser(token.localId);
-
-    return { token, user };
+    return await response.json<SignInWithPasswordResponse>();
   }
 
-  public async signInWithCustomToken(
-    token: string,
-  ): Promise<{ idToken: string; refreshToken: string }> {
+  public async signInWithCustomToken(token: string) {
     const request = {
       returnSecureToken: true,
       token,
@@ -145,11 +141,7 @@ export class FirebaseAuth {
       isNewUser: boolean;
     };
 
-    const json = await response.json<SignInWithCustomTokenResponse>();
-    return {
-      idToken: json.idToken,
-      refreshToken: json.refreshToken,
-    };
+    return await response.json<SignInWithCustomTokenResponse>();
   }
 
   public async signInWithIdp({

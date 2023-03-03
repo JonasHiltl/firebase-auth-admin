@@ -31,7 +31,6 @@ export class TokenVerifier {
       tokens = await response.json<CertResponse>();
 
       const cc = response.headers.get('cache-control');
-      console.log(cc);
       if (cc !== null) {
         const parts = cc.split(',');
         parts.forEach(part => {
