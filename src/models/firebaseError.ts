@@ -21,7 +21,6 @@ export class FirebaseError extends Error {
   }
 
   static fromServerError(rawError: FirebaseErrorResponse): FirebaseError {
-    console.log(rawError);
     return new FirebaseError({
       code: rawError.error.code,
       errors: rawError.error.errors,
