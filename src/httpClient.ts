@@ -5,9 +5,10 @@ const BASE_URL = 'https://identitytoolkit.googleapis.com/v1';
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD';
 
 interface HttpRequestConfig {
+  baseURL?: string;
   path: string;
   headers?: Headers;
-  data?: BodyInit | null;
+  data?: BodyInit;
   method: HttpMethod;
 }
 
@@ -34,7 +35,9 @@ export class AuthorizedHttpClient implements HttpClient {
       headerClone.set('Content-Type', 'application/json');
     }
 
-    return fetch(BASE_URL + req.path, {
+    const baseURL = req.baseURL || BASE_URL;
+
+    return fetch(baseURL + req.path, {
       headers: headerClone,
       body: req.data,
       method: req.method,

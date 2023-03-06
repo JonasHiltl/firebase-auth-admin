@@ -196,4 +196,41 @@ export class FirebaseAuth {
   ): Promise<string> {
     return this.generator.createCustomToken(userID, developerClaims);
   }
+
+  /**
+   * Exchanges a refresh token for an ID token.
+   */
+  public async refreshIdToken(refreshToken: string) {
+    const BASE_URL = 'https://securetoken.googleapis.com/v1';
+    const body = {
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    };
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+    const response = await this.client.send({
+      baseURL: BASE_URL,
+      method: 'POST',
+      path: `/token`,
+      headers: headers,
+      data: JSON.stringify(body),
+    });
+
+    if (!response.ok) {
+      const err = await response.json<FirebaseErrorResponse>();
+      throw FirebaseError.fromServerError(err);
+    }
+
+    type RefreshIdTokenResponse = {
+      expires_in: string;
+      token_type: string;
+      refresh_token: string;
+      id_token: string;
+      user_id: string;
+      project_id: string;
+    };
+    return response.json<RefreshIdTokenResponse>();
+  }
 }
