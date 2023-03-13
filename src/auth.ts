@@ -188,6 +188,7 @@ export class FirebaseAuth {
       nonce?: string;
       oauthIdToken?: string;
       pendingToken?: string;
+      errorMessage?: string;
     };
 
     return response.json<SignInWithIdpResponse>();
