@@ -78,7 +78,14 @@ export class FirebaseAuth {
 
     const result = await response.json<UserResult>();
 
-    return new UserRecord(result.users[0]);
+    if ('users' in result && result.users.length > 0) {
+      return new UserRecord(result.users[0]);
+    } else {
+      throw new FirebaseError({
+        code: 404,
+        message: 'User not found',
+      });
+    }
   }
 
   public async deleteUser(userID: string): Promise<void> {
