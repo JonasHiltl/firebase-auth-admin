@@ -12,6 +12,7 @@ Firebase Authentication Admin SDK for the Cloudflare Worker environment.
 - [x] verifyIdToken()
 - [x] refreshIdToken()
 - [x] createCustomToken()
+- [x] deleteUser()
 
 # Installation
 Not yet published on npm.

@@ -67,7 +67,6 @@ export class FirebaseAuth {
       path: `/projects/${this.config.getProjectID()}/accounts:lookup`,
       data: JSON.stringify(request),
     });
-
     if (!response.ok) {
       const err = await response.json<FirebaseErrorResponse>();
       throw FirebaseError.fromServerError(err);
@@ -80,6 +79,18 @@ export class FirebaseAuth {
     const result = await response.json<UserResult>();
 
     return new UserRecord(result.users[0]);
+  }
+
+  public async deleteUser(userID: string): Promise<void> {
+    const request = {
+      localId: userID,
+    };
+
+    await this.client.send({
+      method: 'POST',
+      path: `/accounts:delete`,
+      data: JSON.stringify(request),
+    });
   }
 
   public async signInWithPassword({
