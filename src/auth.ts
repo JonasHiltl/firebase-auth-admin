@@ -144,20 +144,27 @@ export class FirebaseAuth {
     return await response.json<SignInWithCustomTokenResponse>();
   }
 
+  /**
+   * Sign in with OAuth credential or link an OAuth credential to a user by specifying the `idToken`
+   * of the account you are trying to link the credential to.
+   */
   public async signInWithIdp({
     postBody,
     requestUri,
     tenantId,
     returnIdpCredential = true,
     returnSecureToken = true,
+    idToken,
   }: {
     postBody: string;
     requestUri: string;
     tenantId?: string;
     returnIdpCredential?: boolean;
     returnSecureToken?: boolean;
+    idToken?: string;
   }) {
     const request = {
+      idToken,
       postBody,
       requestUri,
       tenantId,
