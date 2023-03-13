@@ -7,7 +7,7 @@ Firebase Authentication Admin SDK for the Cloudflare Worker environment.
 - [x] createUser()
 - [x] getUser()
 - [x] signInWithCustomToken()
-- [x] signInWithIdp()
+- [x] signInWithIdp() / link OAuth Credential
 - [x] signInWithPassword()
 - [x] verifyIdToken()
 - [x] refreshIdToken()
@@ -36,6 +36,18 @@ const user = await auth.createUser({
     password: "devpassword",
     displayName: "Jon Doe",
 });
+```
+**Sign in with Google**
+```typescript
+const tokenResponse = await auth.signInWithIdp({
+    postBody: `id_token=${googleIdToken}&providerId=google.com`,
+    requestUri: 'http://localhost',
+});
+```
+
+**Verify an idToken**
+```typescript
+const decodedToken = await auth.verifyIdToken("token");
 ```
 **Cache Google Token & Certificates**  
 Requests to the Google api to get required certificates can be cached by passing a `Cache` implementation to the `initializeAuth` function.  
